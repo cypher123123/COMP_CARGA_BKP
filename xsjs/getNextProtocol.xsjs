@@ -25,7 +25,10 @@ function getUnfinishedProtocol(emailVendedor) {
 
 function getNextProtocol() {
     let sQuery = 'SELECT TOP 1 "NumAgrupamento", "SLA_OTIF" FROM "COMP_CARGA"."comp_carga.table::cds_table.Protocolo" ';
-     sQuery +=    'WHERE NOT "Excluido" = ? AND "Status" = ? ORDER BY "SLA_OTIF" ASC';
+    // Início da Alteração - Alexandre Passarelli - INC0286022 
+    // sQuery +=    'WHERE NOT "Excluido" = ? AND "Status" = ? ORDER BY "SLA_OTIF" ASC';
+     sQuery +=    'WHERE NOT "Excluido" = ? AND "Status" = ? ORDER BY DAYOFYEAR(SLA_OTIF) DESC, HOUR(SLA_OTIF) ASC,  MINUTE(SLA_OTIF) ASC';
+    // Fim da Alteração - Alexandre Passarelli - INC0286022
      
     let oStatement = oConnection.prepareStatement(sQuery);
     oStatement.setString(1, 'X');
