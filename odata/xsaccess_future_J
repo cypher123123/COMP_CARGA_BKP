@@ -1,0 +1,6 @@
+{
+    "exposed": true,
+    "authorization": [
+        "comp_carga.odata::Access"
+    ]
+}

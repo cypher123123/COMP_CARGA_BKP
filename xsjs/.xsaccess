@@ -1,0 +1,16 @@
+{
+    "exposed" : true,
+     "cache_control" : "must-revalidate",
+     "cors":
+      {
+          "enabled":true,
+          "allowMethods": ["GET","POST","DELETE","PUT","HEAD"],
+          "allowOrigin": ["*"],
+          "allowHeaders" : ["crossdomain","X-Requested-With","Access-Control-Request-Method","Access-Control-Request-Headers","Accept-Encoding","Sec-Fetch-Mode","Sec-Fetch-Site","authorization","Accept","Origin","Content-Type","Content-Length","content-encoding","Depth","User-Agent","Cache-Control","x-csrf-token","x-sap-cid","Accept-Language"],
+          "exposeHeaders" : ["x-csrf-token","access-control-allow-headers","Access-Control-Allow-Origin","access-control-expose-headers","authorization"],
+          "maxAge":"3600"
+      },
+     "enable_etags" : false,
+     "force_ssl" : false,
+     "prevent_xsrf" : false
+} 

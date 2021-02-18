@@ -1,0 +1,33 @@
+-- update "COMP_CARGA"."comp_carga.table::cds_table.Protocolo"
+-- set "Status" = 'Aguardando', "MotivoPausa" = null, "AtendimentoInicio" = null, "AtendimentoFim" = null, 
+-- "EmailVendedor" = null WHERE "NumAgrupamento" = 6220;
+
+-- delete from "COMP_CARGA"."comp_carga.table::cds_table.Cliente";
+-- delete from "COMP_CARGA"."comp_carga.table::cds_table.Ligacoes";
+-- delete from "COMP_CARGA"."comp_carga.table::cds_table.OrdemVenda";
+-- delete from "COMP_CARGA"."comp_carga.table::cds_table.Protocolo";
+-- delete from "COMP_CARGA"."comp_carga.table::cds_table.ProtocoloCliente";
+-- delete from "COMP_CARGA"."comp_carga.table::cds_table.Telefone";
+-- delete from "COMP_CARGA"."comp_carga.table::cds_table.UltimasComprasHeader";
+-- delete from "COMP_CARGA"."comp_carga.table::cds_table.UltimasComprasItens";
+
+-- select * from "COMP_CARGA"."comp_carga.table::cds_table.Ligacoes" WHERE "NumAgrupamento" = '12345';
+-- select * from "COMP_CARGA"."comp_carga.table::cds_table.OrdemVenda" WHERE "NumAgrupamento" = '12345';
+-- select * from "COMP_CARGA"."comp_carga.table::cds_table.Protocolo" WHERE "NumAgrupamento" = '12345';
+-- select * from "COMP_CARGA"."comp_carga.table::cds_table.ProtocoloCliente" WHERE "NumAgrupamento" = '1';
+-- select * from "COMP_CARGA"."comp_carga.table::cds_table.UltimasComprasHeader" WHERE "NumAgrupamento" = '1';
+-- select * from "COMP_CARGA"."comp_carga.table::cds_table.UltimasComprasItens" WHERE "NumAgrupamento" = '1';
+
+-- ############### REVERTER SUBIDA PROTOCOLO ###############
+-- DELETE FROM "COMP_CARGA"."comp_carga.table::cds_table.Protocolo"
+-- WHERE "NumAgrupamento" = 'AGRUP1';
+-- DELETE FROM "COMP_CARGA"."comp_carga.table::cds_table.ProtocoloCliente"
+-- WHERE "NumAgrupamento" = 'AGRUP1';
+-- DELETE FROM "COMP_CARGA"."comp_carga.table::cds_table.OrdemVenda"
+-- WHERE "NumAgrupamento" = 'AGRUP1';
+-- DELETE FROM "COMP_CARGA"."comp_carga.table::cds_table.UltimasComprasHeader"
+-- WHERE "NumAgrupamento" = 'AGRUP1';
+-- DELETE FROM "COMP_CARGA"."comp_carga.table::cds_table.UltimasComprasItens"
+-- WHERE "NumAgrupamento" = 'AGRUP1';
+-- DELETE FROM "COMP_CARGA"."comp_carga.table::cds_table.Ligacoes"
+-- WHERE "NumAgrupamento" = 'AGRUP1';

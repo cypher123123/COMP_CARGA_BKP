@@ -1,0 +1,288 @@
+namespace comp_carga.table;
+
+@Schema: 'COMP_CARGA'
+context cds_table {
+
+    @Catalog.tableType: #COLUMN
+    entity Vendedor {
+        key EmailVendedor: String(100);
+        Adm: String(1);
+        NomeVendedor: String(200);
+        AreaVendedor: String(200);
+        CodSAP: String(20);
+        Excluido: String(1) Default '';
+    } 
+    
+    @Catalog.tableType: #COLUMN
+    entity Cliente {
+        key IdCliente: String(20);
+        Cidade: String(200);
+        NomeEmpresa: String(200);
+        NomeContato: String(200);
+        MediaCompraTonelada: Double;
+        MediaCompraPallets: Double;
+        DataUltimoContato: UTCTimestamp;
+        DataUltimaCompra: UTCTimestamp;
+        CreditoTotal: Double;
+        CreditoVC: Double;
+        CreditoPagueFlex: Double;
+    }
+    
+    @Catalog.tableType: #COLUMN
+    entity Telefone {
+        key IdCliente: String(20);
+        key NumTelefone: String(40);
+        Prioridade: Integer;
+    }
+    
+    // @Catalog.tableType: #COLUMN
+    // entity Atendimento {
+    //     key NumAgrupamento: String(20);
+    //     key TimeInicio: UTCTimestamp;
+    //     TimeFim: UTCTimestamp;
+    // }
+    
+    @Catalog.tableType: #COLUMN
+    entity Ligacoes {
+        key NumAgrupamento: String(20);
+        key IdCliente: String(20);
+        key LigacaoInicio: UTCTimestamp;
+        LigacaoFim: UTCTimestamp;
+        ObservacaoVendedor: String(500);
+        ObservacaoCliente: String(500);
+        OrdemVendas: String(200);
+        Rating: Double;
+        Resultado: String(200);
+        Disposition: String(200);
+        Disposition9: String(200);
+    }
+    
+    // @Catalog.tableType: #COLUMN
+    // entity HistoricoComprasHeader {
+    //     key IdCliente: String(20);
+    //     key NumPedido: String(20);
+    //     NomeComprador: String(200);
+    //     Data: UTCTimestamp;
+    // }
+    
+    // @Catalog.tableType: #COLUMN
+    // entity HistoricoComprasItens {
+    //     key NumPedido: String(20);
+    //     key IdItem: Integer;
+    //     MaterialNum: String(20);
+    //     MaterialDescr: String(200);
+    //     MaterialQuantidade: Double;
+    //     ValorUnitario: Double;
+    // }
+    
+    @Catalog.tableType: #COLUMN
+    entity UltimasComprasHeader {
+        key IdCliente: String(20);
+        key NumAgrupamento: String(20);
+        key IdUltimaCompra: String(5);
+        MediaCompra: Double;
+        QuantidadeCargaFracionada: Integer;
+        QuantidadeCargaFechada: Integer;
+    }
+    
+    @Catalog.tableType: #COLUMN
+    entity UltimasComprasItens {
+        key IdCliente: String(20);
+        key NumAgrupamento: String(20);
+        key IdUltimaCompra: String(5);
+        key Categoria: String(50);
+        Quantidade: Double;
+    }
+    
+    @Catalog.tableType: #COLUMN
+    entity Parametros {
+        key IdParametro: Integer;
+        //SLA_Atendimento: Double;
+        //SLAVencimento: UTCTimestamp;
+        SLAPadraoMinutos: Double;
+        //RankingVendedores: String(200);
+        //SelecaoFrete: String(200);
+        NrCliente: Integer Default 0;
+        TempoCarregamentoEmMinutos: Integer;
+        //HabilitarContingencia: String(1);
+        EncerramentoForcado: String(1);
+        OrdemVendaSemCliente: String(1);
+        RemoveExpiredService: String(1) Default '';
+        InicioCelula: String(5);
+        FimCelula: String(5);
+        //HoraLimiteInterface: String(5) Default '16:00';
+        HoraLimiteInterface: Integer Default 16;
+    }
+    
+    @Catalog.tableType: #COLUMN
+    entity Protocolo {
+        key NumAgrupamento: String(20);
+        Status: String(200);
+        UnidadeCodigo: Integer;
+        UnidadeNome: String(200);
+        Estado: String(2);
+        SLA_OTIF: UTCTimestamp;
+        ToneladasRestantesInicial: Double;
+        ToneladasRestantes: Double;
+        MinimaToneladasRestante: Double;
+        PalletsRestantes: Integer;
+        MotivoPausa: String(200);
+        MotivoObservacao: String(200);
+        EmailVendedor: String(100) Default '';
+        AtendimentoInicio: UTCTimestamp;
+        AtendimentoFim: UTCTimestamp;
+        PausaEmSegundos: Integer Default 0;
+        TimePausa: UTCTimestamp;
+        DataHoraCarga: UTCTimestamp;
+        KPIValido: String(1) Default '';
+        Excluido: String(1) Default '';
+        FreteMorto: Double Default '0.00';
+        InterfaceAtuante : String(100) Default '';
+    }
+    
+    @Catalog.tableType: #COLUMN
+    entity ProtocoloCliente {
+        key NumAgrupamento: String(20);
+        key IdCliente: String(20);
+        Prioridade: Integer;
+        Classificacao: String(1);
+        LigacaoRealizada: Integer;
+        ObservacaoLigacao: String(200);
+    }
+    
+    @Catalog.tableType: #COLUMN
+    entity FormaPagamento {
+        key IdFormaPagamento: String(4);
+        FormaPagamento: String(30);
+    }
+    
+    @Catalog.tableType: #COLUMN
+    entity ProtocoloRollback {
+        key NumAgrupamento: String(20);
+        Status: String(200);
+        Excluido: String(1);
+        InterfaceAtuante : String(100) Default '';
+    }
+    
+    @Catalog.tableType: #COLUMN
+    entity OrdemVenda {
+        key NumAgrupamento: String(20);
+        key IdCliente: String(20); 
+        key OrdemVenda: String(20);
+        Centro: String(20);
+        IdFormaPagamento: String(4);
+        ToneladasOV: Double;
+        PagueFlex: Integer Default 0;
+        OrdemDoComplemento: Integer Default 0;
+        EmailVendedor: String(255);
+        DataOrdemVenda: UTCTimestamp;
+        NomeComprador: String(100);
+        AreaVenda: String(10);
+        AdicionalFracionamento: Integer Default 0;
+        AdicionalDescarga: Integer Default 0;
+        Isencao: Double Default '0';
+        Observacao: String(255);
+        Valor: Double Default 0;
+        FreteMortoEvitado: Double Default '0.00';
+    }
+    
+    @Catalog.tableType: #COLUMN
+    entity OrdemVendaItens {
+        key OrdemVenda: String(20);
+        key Material: String(18);
+        DescricaoMaterial: String(255);
+        Quantidade: Integer Default 0;
+    }
+    
+    @Catalog.tableType: #COLUMN
+    entity CentroRegiao {
+        key CodCentro: Integer;
+        NomeRegiao: String(255);
+    }
+    
+    @Catalog.tableType: #COLUMN
+    entity Regioes { 
+        key Nome: String(255);
+    }
+    
+    @Catalog.tableType: #COLUMN
+    entity EnvVariable { 
+        key Key: String(255);
+        Value: String(255);
+    }
+    
+    @Catalog.tableType: #COLUMN
+    entity LOG_InsertedDataFromCPI {
+        key Time: UTCTimestamp;
+        Status: String(10);
+        Json: LargeString;
+        Protocolos: String(255); 
+        Clientes: String(255);
+        ProtocoloClientes: String(255);
+        OrdensVenda: String(255);
+        Telefones: String(255);
+        Compras: String(255);
+        ComprasItens: String(255);
+    }
+     
+    @Catalog.tableType: #COLUMN
+    entity LOG_IntegracaoFive9 {
+        key Time: UTCTimestamp;
+        Endpoint: String(30);
+        Body: LargeString;
+    }
+    
+    @Catalog.tableType: #COLUMN
+    entity LOG_LigacaoFive9 {
+        key Time: UTCTimestamp;
+        Endpoint: String(30);
+        Vendedor: String(200);
+        NumAgrupamento: String(30);
+        IdCliente: String(30);
+        Disposition: String(200);
+        NumDiscado: String(30);
+        LTimeStamp: UTCTimestamp;
+    }
+    
+    @Catalog.tableType: #COLUMN
+    entity LOG_CompleCarga {
+        key NumAgrupamento : String(20);
+        Data               : String(24);
+        Vendedor           : String(100);
+        Descricao          : String(255);
+        Informacao         : String(255);
+    }
+    
+    @Catalog.tableType: #COLUMN
+    entity LOG_RemoveExpiredProtocols {
+        key Time: UTCTimestamp;
+        Json: LargeString;
+    }
+    
+    @Catalog.tableType: #COLUMN
+    entity LOG_RemoveDeletedProtocols {
+        key Time: UTCTimestamp;
+        Input: LargeString;
+        Status: String(30);
+        Response: String(50);
+    }
+    
+    @Catalog.tableType: #COLUMN
+    entity LOG_ResetedProtocols {
+        key Time: UTCTimestamp;
+        Input: LargeString;
+    }
+    
+    @Catalog.tableType: #COLUMN
+    entity LOG_GetNotFullyFilledProtocols {
+        key Time: UTCTimestamp;
+        Input: LargeString;
+    }
+    
+    // @Catalog.tableType: #COLUMN
+    // entity Estado {
+    //     key Estado: String(2);
+    //     Regiao: String(15);
+    // }
+    
+}

@@ -1,0 +1,28 @@
+namespace comp_carga.view;
+
+@Schema: 'COMP_CARGA'
+context cds_ProtocoloVendedor_bkp {
+
+    define view ProtocoloVendedor_bkp as select from "comp_carga.table::cds_table.Protocolo" as Protocolo
+    left outer join "comp_carga.table::cds_table.Vendedor" as Vendedor
+        on Protocolo."EmailVendedor" = Vendedor."EmailVendedor"
+    {
+        key Protocolo.NumAgrupamento as NumAgrupamento,
+        Protocolo.Status as Status,
+        Protocolo.UnidadeCodigo as UnidadeCodigo,
+        Protocolo.UnidadeNome as UnidadeNome,
+        Protocolo.Estado as Estado,
+        Protocolo.SLA_OTIF as SLA_OTIF,
+        Protocolo.ToneladasRestantes as ToneladasRestantes,
+        Protocolo.ToneladasRestantesInicial as ToneladasRestantesInicial,
+        Protocolo.AtendimentoInicio as AtendimentoInicio,
+        Protocolo.AtendimentoFim as AtendimentoFim,
+        Vendedor.NomeVendedor as NomeVendedor,
+        Protocolo.DataHoraCarga as DataHoraCarga,
+        Protocolo.MotivoPausa as MotivoPausa,
+        Protocolo.Excluido as Excluido,
+        Protocolo.InterfaceAtuante as InterfaceAtuante
+    }
+    where Protocolo."KPIValido" = 'X';
+    
+};

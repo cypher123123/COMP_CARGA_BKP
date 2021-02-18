@@ -1,0 +1,33 @@
+namespace comp_carga.view;
+
+@Schema: 'COMP_CARGA'
+context cds_ProtocoloVendedor {
+
+    define view ProtocoloVendedor as select from "comp_carga.table::cds_table.Protocolo" as Protocolo
+    left outer join "comp_carga.table::cds_table.Vendedor" as Vendedor
+        on Protocolo."EmailVendedor" = Vendedor."EmailVendedor"
+    {
+        key Protocolo.NumAgrupamento as NumAgrupamento,
+        Protocolo.Status as Status,
+        Protocolo.UnidadeCodigo as UnidadeCodigo,
+        Protocolo.UnidadeNome as UnidadeNome,
+        Protocolo.Estado as Estado,
+        Protocolo.SLA_OTIF as SLA_OTIF,
+        Protocolo.ToneladasRestantes as ToneladasRestantes,
+        Protocolo.ToneladasRestantesInicial as ToneladasRestantesInicial,
+        Protocolo.AtendimentoInicio as AtendimentoInicio,
+        Protocolo.AtendimentoFim as AtendimentoFim,
+        Vendedor.NomeVendedor as NomeVendedor,
+        Protocolo.DataHoraCarga as DataHoraCarga,
+        Protocolo.MotivoPausa as MotivoPausa,
+        Protocolo.Excluido as Excluido,
+        Protocolo.InterfaceAtuante as InterfaceAtuante,
+        Protocolo.PausaEmSegundos as PausaEmSegundos,
+        CASE
+            WHEN "AtendimentoFim" is not null THEN seconds_between("AtendimentoFim", "SLA_OTIF")
+            ELSE seconds_between(now(), "SLA_OTIF")
+        END as SLA_OTIF_Calculado 
+    };
+    //where Protocolo."KPIValido" = 'X';
+    
+};

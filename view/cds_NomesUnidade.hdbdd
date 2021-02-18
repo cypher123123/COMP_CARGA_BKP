@@ -1,0 +1,11 @@
+namespace comp_carga.view;
+
+@Schema: 'COMP_CARGA'
+context cds_NomesUnidade {
+
+    define view NomesUnidade as select from "comp_carga.table::cds_table.Protocolo" as Protocolo distinct
+    {
+        Protocolo.UnidadeNome as UnidadeNome
+    };
+    
+};

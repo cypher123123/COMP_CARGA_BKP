@@ -1,0 +1,82 @@
+ service {
+    "COMP_CARGA"."comp_carga.table::cds_table.Vendedor" as "Vendedores";
+    "COMP_CARGA"."comp_carga.table::cds_table.Telefone" as "Telefones";
+    "COMP_CARGA"."comp_carga.table::cds_table.Parametros" as "Parametros";
+    "COMP_CARGA"."comp_carga.table::cds_table.UltimasComprasItens" as "UltimasComprasItens";
+    "COMP_CARGA"."comp_carga.table::cds_table.Ligacoes" as "Ligacoes"; 
+    "COMP_CARGA"."comp_carga.table::cds_table.OrdemVendaItens" as "OrdemVendaItens";
+    "COMP_CARGA"."comp_carga.table::cds_table.FormaPagamento" as "FormaPagamento";
+    "COMP_CARGA"."comp_carga.table::cds_table.Regioes" as "Regioes";   
+    "COMP_CARGA"."comp_carga.table::cds_table.CentroRegiao" as "CentroRegiao"; 
+    "COMP_CARGA"."comp_carga.table::cds_table.EnvVariable" as "EnvVariable";
+    "COMP_CARGA"."comp_carga.table::cds_table.LOG_CompleCarga" as "LOG_CompleCarga";       
+     
+    "COMP_CARGA"."comp_carga.table::cds_table.OrdemVenda" as "OrdemVenda"
+        navigates("ToOrdemVendaItens" as "NavOrdemItens", "ToFormaPagamento" as "NavFormaPagamento");
+    
+    association "ToOrdemVendaItens"
+    principal "OrdemVenda"("OrdemVenda") multiplicity "1"
+    dependent "OrdemVendaItens"("OrdemVenda") multiplicity "*";
+     
+    association "ToFormaPagamento"
+    principal "OrdemVenda"("IdFormaPagamento") multiplicity "1"
+    dependent "FormaPagamento"("IdFormaPagamento") multiplicity "1";
+    
+    "COMP_CARGA"."comp_carga.table::cds_table.UltimasComprasHeader" as "UltimasComprasHeader"
+        navigates("ToItens" as "NavItens");
+      
+    association "ToItens"  
+    principal "UltimasComprasHeader"("IdCliente", "IdUltimaCompra") multiplicity "1"
+    dependent "UltimasComprasItens"("IdCliente", "IdUltimaCompra") multiplicity "*"; 
+    
+    "COMP_CARGA"."comp_carga.table::cds_table.ProtocoloCliente" as "ProtocoloCliente" 
+        navigates("ToClientes" as "NavCliente", "ToProtocoloClienteOrdemVenda" as "NavOrdensVenda", "ToLigacoes" as "NavLigacoes");
+        
+    association "ToClientes"
+    principal "ProtocoloCliente"("IdCliente") multiplicity "1"
+    dependent "Clientes"("IdCliente") multiplicity "1";
+    
+    association "ToProtocoloClienteOrdemVenda"
+    principal "ProtocoloCliente"("NumAgrupamento", "IdCliente") multiplicity "1"
+    dependent "OrdemVenda"("NumAgrupamento", "IdCliente") multiplicity "*";
+    
+    association "ToLigacoes"
+    principal "ProtocoloCliente"("NumAgrupamento", "IdCliente") multiplicity "1"
+    dependent "Ligacoes"("NumAgrupamento", "IdCliente") multiplicity "*";
+    
+    "COMP_CARGA"."comp_carga.table::cds_table.Protocolo" as "Protocolos"  
+        navigates("ToProtocoloCliente" as "NavProtocoloCliente", "ToOrdemVenda" as "NavOrdensVenda"); 
+    
+    association "ToProtocoloCliente"
+    principal "Protocolos"("NumAgrupamento") multiplicity "1"
+    dependent "ProtocoloCliente"("NumAgrupamento") multiplicity "*"; 
+    
+    association "ToOrdemVenda"
+    principal "Protocolos"("NumAgrupamento") multiplicity "1"
+    dependent "OrdemVenda"("NumAgrupamento") multiplicity "*"; 
+        
+    "COMP_CARGA"."comp_carga.table::cds_table.Cliente" as "Clientes"  
+        navigates("ToUltimasComprasHeader" as "NavUltimasComprasHeader", "ToTelefones" as "NavTelefones");
+    
+    association "ToTelefones"
+    principal "Clientes"("IdCliente") multiplicity "1"
+    dependent "Telefones"("IdCliente") multiplicity "*"; 
+    
+    association "ToUltimasComprasHeader"
+    principal "Clientes"("IdCliente") multiplicity "1"
+    dependent "UltimasComprasHeader"("IdCliente") multiplicity "*"; 
+    
+    association "ToOrdemVendaProtocoloVendedor"
+    principal "ProtocoloVendedor"("NumAgrupamento") multiplicity "1"
+    dependent "OrdemVenda"("NumAgrupamento") multiplicity "*"; 
+    
+    "COMP_CARGA"."comp_carga.view::cds_ProtocoloVendedor.ProtocoloVendedor" as "ProtocoloVendedor" key ( "NumAgrupamento" )
+        navigates("ToOrdemVendaProtocoloVendedor" as "NavOrdensVenda");
+    
+    "COMP_CARGA"."comp_carga.view::cds_NomesUnidade.NomesUnidade" as "NomesUnidade" key ( "UnidadeNome" );
+    "COMP_CARGA"."comp_carga.view::cds_Status.Status" as "Status" key ( "Status" );
+    "COMP_CARGA"."comp_carga.view::cds_ProtocolosPausados.ProtocolosPausados" as "ProtocolosPausados" key ( "NumAgrupamento" );
+    "COMP_CARGA"."comp_carga.view::cds_ProtocoloVendedor_bkp.ProtocoloVendedor_bkp" as "ProtocoloVendedor_bkp" key ( "NumAgrupamento" );
+    "COMP_CARGA"."comp_carga.view::cds_DashboardTempoProtocolos.DashboardTempoProtocolos" as "DashboardTempoProtocolo" key ( "NumAgrupamento" );
+    "COMP_CARGA"."comp_carga.view::cds_DashboardVolumeVenda.DashboardVolumeVenda" as "DashboardVolumeVenda" key("Vendedor");
+}

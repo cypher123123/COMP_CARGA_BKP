@@ -1,0 +1,72 @@
+service {
+    "COMP_CARGA"."comp_carga.table::cds_table.Vendedor" as "Vendedores" create forbidden delete forbidden update forbidden;
+    "COMP_CARGA"."comp_carga.table::cds_table.Telefone" as "Telefones" create forbidden delete forbidden update forbidden;
+    "COMP_CARGA"."comp_carga.table::cds_table.Parametros" as "Parametros" create forbidden delete forbidden update forbidden;
+    "COMP_CARGA"."comp_carga.table::cds_table.UltimasComprasItens" as "UltimasComprasItens" create forbidden delete forbidden update forbidden;
+    "COMP_CARGA"."comp_carga.table::cds_table.Ligacoes" as "Ligacoes" create forbidden delete forbidden update forbidden; 
+    "COMP_CARGA"."comp_carga.table::cds_table.OrdemVendaItens" as "OrdemVendaItens" create forbidden delete forbidden update forbidden;
+    "COMP_CARGA"."comp_carga.table::cds_table.FormaPagamento" as "FormaPagamento" create forbidden delete forbidden update forbidden;
+    "COMP_CARGA"."comp_carga.table::cds_table.Regioes" as "Regioes" create forbidden delete forbidden update forbidden;   
+    "COMP_CARGA"."comp_carga.table::cds_table.CentroRegiao" as "CentroRegiao" create forbidden delete forbidden update forbidden;   
+    "COMP_CARGA"."comp_carga.table::cds_table.LOG_CompleCarga" as "LOG_CompleCarga" create forbidden delete forbidden update forbidden;  
+        
+    "COMP_CARGA"."comp_carga.table::cds_table.OrdemVenda" as "OrdemVenda"
+        navigates("ToOrdemVendaItens" as "NavOrdemItens", "ToFormaPagamento" as "NavFormaPagamento") create forbidden delete forbidden update forbidden; 
+     
+    association "ToOrdemVendaItens"
+    principal "OrdemVenda"("OrdemVenda") multiplicity "1"
+    dependent "OrdemVendaItens"("OrdemVenda") multiplicity "*";
+     
+    association "ToFormaPagamento"
+    principal "OrdemVenda"("IdFormaPagamento") multiplicity "1"
+    dependent "FormaPagamento"("IdFormaPagamento") multiplicity "1";
+    
+    "COMP_CARGA"."comp_carga.table::cds_table.UltimasComprasHeader" as "UltimasComprasHeader"
+        navigates("ToItens" as "NavItens") create forbidden delete forbidden update forbidden;
+      
+    association "ToItens"  
+    principal "UltimasComprasHeader"("IdCliente", "IdUltimaCompra") multiplicity "1"
+    dependent "UltimasComprasItens"("IdCliente", "IdUltimaCompra") multiplicity "*"; 
+    
+    "COMP_CARGA"."comp_carga.table::cds_table.ProtocoloCliente" as "ProtocoloCliente" 
+        navigates("ToClientes" as "NavCliente", "ToProtocoloClienteOrdemVenda" as "NavOrdensVenda", "ToLigacoes" as "NavLigacoes") create forbidden delete forbidden update forbidden;
+        
+    association "ToClientes"
+    principal "ProtocoloCliente"("IdCliente") multiplicity "1"
+    dependent "Clientes"("IdCliente") multiplicity "1";
+    
+    association "ToProtocoloClienteOrdemVenda"
+    principal "ProtocoloCliente"("NumAgrupamento", "IdCliente") multiplicity "1"
+    dependent "OrdemVenda"("NumAgrupamento", "IdCliente") multiplicity "*";
+    
+    association "ToLigacoes"
+    principal "ProtocoloCliente"("NumAgrupamento", "IdCliente") multiplicity "1"
+    dependent "Ligacoes"("NumAgrupamento", "IdCliente") multiplicity "*";
+    
+    "COMP_CARGA"."comp_carga.table::cds_table.Protocolo" as "Protocolos"  
+        navigates("ToProtocoloCliente" as "NavProtocoloCliente", "ToOrdemVenda" as "NavOrdensVenda") create forbidden delete forbidden update forbidden; 
+         
+    association "ToProtocoloCliente"
+    principal "Protocolos"("NumAgrupamento") multiplicity "1"
+    dependent "ProtocoloCliente"("NumAgrupamento") multiplicity "*"; 
+    
+    association "ToOrdemVenda"
+    principal "Protocolos"("NumAgrupamento") multiplicity "1"
+    dependent "OrdemVenda"("NumAgrupamento") multiplicity "*"; 
+        
+    "COMP_CARGA"."comp_carga.table::cds_table.Cliente" as "Clientes"  
+        navigates("ToUltimasComprasHeader" as "NavUltimasComprasHeader", "ToTelefones" as "NavTelefones") create forbidden delete forbidden update forbidden;
+    
+    association "ToTelefones"
+    principal "Clientes"("IdCliente") multiplicity "1"
+    dependent "Telefones"("IdCliente") multiplicity "*"; 
+    
+    association "ToUltimasComprasHeader"
+    principal "Clientes"("IdCliente") multiplicity "1"
+    dependent "UltimasComprasHeader"("IdCliente") multiplicity "*"; 
+    
+    "COMP_CARGA"."comp_carga.view::cds_ProtocolosPausados.ProtocolosPausados" as "ProtocolosPausados" key ( "NumAgrupamento" ) create forbidden delete forbidden update forbidden;
+    "COMP_CARGA"."comp_carga.view::cds_ProtocoloVendedor.ProtocoloVendedor" as "ProtocoloVendedor" key ( "NumAgrupamento" ) create forbidden delete forbidden update forbidden;
+    "COMP_CARGA"."comp_carga.view::cds_DashboardTempoProtocolos.DashboardTempoProtocolos" as "DashboardTempoProtocolo" key ( "NumAgrupamento" ) create forbidden delete forbidden update forbidden;
+    "COMP_CARGA"."comp_carga.view::cds_DashboardVolumeVenda.DashboardVolumeVenda" as "DashboardVolumeVenda" key("Vendedor") create forbidden delete forbidden update forbidden;
+}

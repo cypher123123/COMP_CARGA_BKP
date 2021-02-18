@@ -1,0 +1,18 @@
+namespace comp_carga.view;
+
+@Schema: 'COMP_CARGA'
+context cds_DashboardTempoProtocolos {
+    define view DashboardTempoProtocolos as
+    
+    select from "comp_carga.table::cds_table.Protocolo" as a
+    inner join "comp_carga.table::cds_table.Ligacoes" as b
+    on a."NumAgrupamento" = b."NumAgrupamento"
+    {
+        key a."NumAgrupamento" as NumAgrupamento,
+        a."Status" as Status,
+        TO_INTEGER(AVG(SECONDS_BETWEEN (b."LigacaoInicio",
+        b."LigacaoFim"))) as Tempo 
+    }
+    group by a."NumAgrupamento",
+    a."Status";
+};  

@@ -1,0 +1,19 @@
+namespace comp_carga.view;
+
+@Schema: 'COMP_CARGA'
+context cds_ProtocolosPausados {
+
+    define view ProtocolosPausados as select from "comp_carga.table::cds_table.Protocolo" as Protocolo
+    left outer join "comp_carga.table::cds_table.Vendedor" as Vendedor
+        on Protocolo."EmailVendedor" = Vendedor."EmailVendedor"
+    {
+        key Protocolo.NumAgrupamento as NumAgrupamento,
+        Protocolo.MotivoPausa as MotivoPausa,
+        Protocolo.MotivoObservacao as MotivoObservacao,
+        Protocolo."EmailVendedor" as EmailVendedor,
+        Protocolo.Excluido as Excluido,
+        Vendedor."NomeVendedor" as NomeVendedor
+    }
+    where Protocolo."Status" = 'Pausada';
+
+}

@@ -1,0 +1,17 @@
+namespace comp_carga.view;
+
+@Schema: 'COMP_CARGA'
+context cds_DashboardVolumeVenda {
+    define view DashboardVolumeVenda as
+    
+    select from "comp_carga.table::cds_table.OrdemVenda" as ov
+    FULL join "comp_carga.table::cds_table.Vendedor" as vd
+    ON vd."EmailVendedor" = ov."EmailVendedor"
+    {
+        key vd."NomeVendedor" as Vendedor,
+        IFNULL(TO_INTEGER(SUM(ov."ToneladasOV")),0) as QuantidadeVenda
+    }
+    WHERE vd."NomeVendedor" is not null
+    GROUP BY vd."NomeVendedor"
+    ORDER BY QuantidadeVenda DESC;
+};
